@@ -16,6 +16,7 @@
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -35,8 +36,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" href="#">Sign Up</a>
             <a class="nav-link" href="#">Login</a>
+            <a class="nav-link active" href="#">Sign Up</a>
             <a class="nav-link" href="#">Expenses</a>
           </div>
         </div>
@@ -45,21 +46,30 @@
     <div
       class="container d-flex flex-column align-items-center justify-content-center mt-5"
     >
-      <form action="" class="p-5">
+      <form action="" class="p-5" method="POST">
+        <div
+          class="mb-3 d-flex justify-content-center align-content-center"
+          style="font-size: 25px"
+        >
+          Sign Up
+        </div>
         <div class="mb-3">
           <label for="name" class="form-label">Name:</label>
-          <input type="text" class="form-control" />
+          <input type="text" class="form-control" id="username" />
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Email Address:</label>
-          <input type="email" class="form-control" />
+          <input type="email" class="form-control" id="email" />
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password:</label>
-          <input type="password" class="form-control" />
+          <input type="password" class="form-control" id="password" />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" id="submit__signUp">
+          Submit
+        </button>
       </form>
     </div>
+    <script src="index.js"></script>
   </body>
 </html>
