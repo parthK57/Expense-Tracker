@@ -1,3 +1,4 @@
+const e = require("express");
 const db = require("../database/db");
 
 exports.postUserHandler = async (req, res, next) => {
@@ -38,13 +39,23 @@ exports.loginHandler = async (req, res, next) => {
   const password = data.password;
 
   await db.execute(
-    "SELECT * FROM users WHERE email = ? AND password = ?",
-    [email, password],
+    "SELECT * FROM users WHERE email = ?",
+    [email],
     (err, results) => {
       if (results.length == 0) {
-        return res.status(400).send("FAILED");
+        return res.status(404).send("USER NOT FOUND");
       } else if (results.length != 0) {
-        res.status(200).send("SUCCESS");
+        db.execute(
+          "SELECT * FROM users WHERE email = ? AND password = ?",
+          [email, password],
+          (err, results) => {
+            if (results.length == 0) {
+              return res.status(401).send("INVALID PASSWORD");
+            } else if (results.length != 0) {
+              return res.status(200).send("OK");
+            }
+          }
+        );
       }
     }
   );
