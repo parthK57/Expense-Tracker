@@ -42,5 +42,17 @@ async function postUser(e) {
         body.removeChild(notify);
       }, 2500);
     }
+    else if (error.response.status == 500) {
+      const notify = document.createElement("div");
+      const body = document.querySelector("body");
+      notify.className =
+        "container d-flex justify-content-center align-content-center failure-notify";
+      notify.innerText = "Internal Server Error!";
+
+      body.appendChild(notify);
+      setTimeout(() => {
+        body.removeChild(notify);
+      }, 2500);
+    }
   }
 }

@@ -1,4 +1,4 @@
-const e = require("express");
+const bcrpyt = require("bcrypt");
 const db = require("../database/db");
 
 exports.postUserHandler = async (req, res, next) => {
@@ -7,6 +7,9 @@ exports.postUserHandler = async (req, res, next) => {
     const username = data.username;
     const email = data.email;
     const password = data.password;
+
+    // HASHING
+    const hashedPassword = await bcrpyt.hash(password, 10);
 
     await db.execute(
       "SELECT * FROM users WHERE email = ?",
@@ -18,7 +21,7 @@ exports.postUserHandler = async (req, res, next) => {
         } else {
           db.execute(
             "INSERT INTO users (username, email, password) VALUES (?,?,?)",
-            [username, email, password],
+            [username, email, hashedPassword],
             (err, results) => {
               //   console.log(err);
               //   console.log(results);
@@ -43,19 +46,18 @@ exports.loginHandler = async (req, res, next) => {
     [email],
     (err, results) => {
       if (results.length == 0) {
+        // EMAIL VERIFICATION
         return res.status(404).send("USER NOT FOUND");
       } else if (results.length != 0) {
-        db.execute(
-          "SELECT * FROM users WHERE email = ? AND password = ?",
-          [email, password],
-          (err, results) => {
-            if (results.length == 0) {
-              return res.status(401).send("INVALID PASSWORD");
-            } else if (results.length != 0) {
-              return res.status(200).send("OK");
-            }
+        // HASHING
+        const hashedPassword = results[0].password;
+        bcrpyt.compare(password, hashedPassword, (err, result) => {
+          if (err) console.log(err);
+          else {
+            if (result) res.status(200).send("OK");
+            else res.status(401).send("INVALID PASSWORD");
           }
-        );
+        });
       }
     }
   );

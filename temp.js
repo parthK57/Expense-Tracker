@@ -1,4 +1,6 @@
-const a = [];
+function a(val){
+    return val;
+}
 
-if (a == null) console.log(true);
-else console.log(false);
+const ab = a("PARTH");
+console.log(ab);
