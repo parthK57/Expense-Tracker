@@ -25,15 +25,14 @@ function submitDetails(e) {
         description: description,
         category: category,
       });
-      const timestamp = res.data;
+      const timestamp = res.data[0].timestamp;
+
       write(money, description, category, timestamp);
     } catch (error) {
       console.log(error);
     }
   };
   postExpense();
-  money = "";
-  description = "";
 }
 
 // CARDS FUNCTION
@@ -46,6 +45,29 @@ function write(money, description, category, timestamp) {
   const descriptionSpan = document.createElement("span");
   const categorySpan = document.createElement("span");
   const timestampSpan = document.createElement("span");
+  const deleteBtn = document.createElement("button");
+
+  //COMMON STUFF
+  deleteBtn.className = "btn btn-danger";
+  deleteBtn.setAttribute("id", "delete-btn");
+  deleteBtn.innerText = "Delete";
+  // Delete Functionality
+  deleteBtn.addEventListener("click", deleteExpense);
+  function deleteExpense() {
+    const deleteCard = async () => {
+      const res = await axios.post("http://localhost:5000/deleteexpense", {
+        email: email,
+        password: password,
+        money: money,
+        timestamp: timestamp,
+        category: category,
+      });
+      if (res.status == 200) {
+        expenseList.removeChild(card);
+      }
+    };
+    deleteCard();
+  }
 
   if (category == "Credit") {
     card.className = "card";
@@ -58,6 +80,7 @@ function write(money, description, category, timestamp) {
     descriptionSpan.innerText = `Description = ${description}`;
     categorySpan.innerText = `Category = ${category}`;
     timestampSpan.innerText = `Time Stamp = ${timestamp}`;
+    timestampSpan.className = "d-flex justify-content-between";
 
     // Lexicographic addition of elements
     expenseList.appendChild(card);
@@ -67,6 +90,7 @@ function write(money, description, category, timestamp) {
     cardBody.appendChild(descriptionSpan);
     cardBody.appendChild(categorySpan);
     cardBody.appendChild(timestampSpan);
+    timestampSpan.appendChild(deleteBtn);
   } else if (category == "Debit") {
     card.className = "card";
     card.setAttribute("id", "card-debit");
@@ -78,6 +102,7 @@ function write(money, description, category, timestamp) {
     descriptionSpan.innerText = `Description = ${description}`;
     categorySpan.innerText = `Category = ${category}`;
     timestampSpan.innerText = `Time Stamp = ${timestamp}`;
+    timestampSpan.className = "d-flex justify-content-between";
 
     // Lexicographic addition of elements
     expenseList.appendChild(card);
@@ -87,6 +112,7 @@ function write(money, description, category, timestamp) {
     cardBody.appendChild(descriptionSpan);
     cardBody.appendChild(categorySpan);
     cardBody.appendChild(timestampSpan);
+    timestampSpan.appendChild(deleteBtn);
   }
 }
 
