@@ -27,7 +27,8 @@ async function postUser(e) {
       body.appendChild(notify);
       setTimeout(() => {
         body.removeChild(notify);
-      }, 2500);
+        window.location.href="http://127.0.0.1:5500/Frontend/login.html";
+      }, 1500);
     }
   } catch (error) {
     if (error.response.status == 400) {
@@ -41,8 +42,7 @@ async function postUser(e) {
       setTimeout(() => {
         body.removeChild(notify);
       }, 2500);
-    }
-    else if (error.response.status == 500) {
+    } else if (error.response.status == 500) {
       const notify = document.createElement("div");
       const body = document.querySelector("body");
       notify.className =

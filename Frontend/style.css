@@ -6,8 +6,15 @@ form {
   color: #1c2321 !important;
   border-radius: 20px;
   background-color: #f7f5f5;
-  /* box-shadow: 10px 21px 62px 25px rgb(239, 239, 239); */
   box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1);
+}
+
+.form-expense {
+  color: #1c2321 !important;
+  border-radius: 20px;
+  background-color: #f7f5f5;
+  box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1);
+  height: 470px;
 }
 
 .success-notify {
@@ -41,4 +48,46 @@ form {
   margin-top: 25px;
   font-size: 16px;
   width: 25%;
+}
+
+#expense-tab {
+  border-radius: 10px;
+  /* background-color: #dddcdc; */
+  /* box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1); */
+  padding: 20px;
+}
+
+#expense-list {
+  color: #1c2321 !important;
+  border-radius: 20px;
+  /* background-color: #1C2321; */
+  /* box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1); */
+}
+
+#card-credit{
+  background-color: #e6ffe9;
+  border: none;
+  color: #000000;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+#card-header-credit{
+  color: green;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+#card-debit{
+  background-color: #ffecec;
+  border: none;
+  color: #000000;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+#card-header-debit{
+  color: crimson;
+  font-size: 17px;
+  font-weight: 600;
 }
