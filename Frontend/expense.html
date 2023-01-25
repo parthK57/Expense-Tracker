@@ -60,7 +60,7 @@
             >
               Premium★
             </button>
-            <button class="btn btn-warning" type="submit" id="logout-btn">
+            <button class="btn btn-primary" type="submit" id="logout-btn">
               Logout
             </button>
           </div>
@@ -87,9 +87,7 @@
                 padding-bottom: 5px;
               "
               id="form-heading"
-            >
-              
-            </div>
+            ></div>
             <div class="mb-3">
               <label for="money" class="form-label">Money:</label>
               <input type="number" class="form-control" id="money" />
@@ -118,10 +116,107 @@
         <div
           class="col-sm col-xl-7 col-lg-7 col-md-12 pt-2 pb-2 mt-2 d-flex flex-column"
           id="expense-list"
+          style="height: 510px; overflow: scroll"
         >
           <h3 class="pb-2" style="border-bottom: 1px solid black">
             EXPENSE LIST
           </h3>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-between">
+        <div class="col-sm col-xl-12 col-lg-12 col-md-12" id="premium-header">
+          <h3 class="pb-2 mt-5" style="border-bottom: 1px solid black">
+            Premium Features
+          </h3>
+        </div>
+        <div
+          class="col-sm col-xl-12 col-lg-12 col-md-12 mt-2 d-flex justify-content-center"
+        >
+          <h4>SCORE</h4>
+        </div>
+        <div
+          class="col-sm col-xl-12 col-lg-12 col-md-12 mt-0 p-0 d-flex justify-content-between"
+        >
+          <span class="d-flex flex-column align-items-center">
+            <p class="p-0 m-0">MIN -&#8734;</p>
+            <p class="p-0 m-0">&darr;</p>
+          </span>
+          <span class="d-flex flex-column align-items-center">
+            <p class="p-0 m-0">MAX &#8734;</p>
+            <p class="p-0 m-0">&darr;</p>
+          </span>
+        </div>
+        <div class="col-sm col-xl-12 col-lg-12 col-md-12 m-0">
+          <div class="separator">0</div>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-between">
+        <div class="col-sm col-xl-4 col-lg-4 col-md-12 pt-2 pb-2 mt-5">
+          <div class="stats-expense">
+            <div class="d-flex w-100 justify-content-center">
+              <div
+                class="p-3 mt-1 d-flex justify-content-center"
+                style="
+                  font-size: 25px;
+                  width: 90%;
+                  border-bottom: 1px solid black;
+                "
+              >
+                Your Stats
+              </div>
+            </div>
+            <div
+              class="d-flex flex-column mt-4 p-3"
+              id="stats-information-container"
+            >
+              <span class="stats-info" id="networth"
+                ><p>Networth:</p>
+                <p>3500000$</p></span
+              >
+              <span class="stats-info" id="credit-score"
+                ><p>Credit Amount:</p>
+                <p>2500000$</p></span
+              >
+              <span class="stats-info" id="debit-score"
+                ><p>Debit Amount:</p>
+                <p>1000000$</p></span
+              >
+              <span class="stats-info" id="balance"
+                ><p>Balance:</p>
+                <p>1500000$</p></span
+              >
+              <span class="stats-info" id="score"
+                ><p>Score:</p>
+                <p>3.5</p></span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-sm col-xl-6 col-lg-6 col-md-12 pt-2 pb-2 mt-5 d-flex flex-column" id="leader-bord-container">
+          <div class="d-flex flex-column w-100 justify-content-center">
+            <div
+              class="pt-3 pb-3 mt-1 d-flex"
+              style="
+                font-size: 25px;
+                width: 100%;
+                border-bottom: 1px solid black;
+              "
+            >
+              Leader Board
+            </div>
+            <div class="users-container d-flex flex-column pt-3 pt-b3">
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px; color: gold;">1) Lewis Hamilton - 3.8</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px; color: silver;">2) Charles Leclare - 3.8</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px; color: brown;">3) Sebastian Vettle - 3.5</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px;">4) Sainz Perez - 3.0</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px;">5) Lewis Hamilton - 3.8</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px;">6) Charles Leclare - 3.8</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px;">7) Sebastian Vettle - 3.5</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px;">8) Sainz Perez - 3.0</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px;">9) Sainz Perez - 3.0</span>
+              <span class="mt-2 pt1 pb-1" style="font-size: 18px;">10) Lewis Hamilton - 3.8</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

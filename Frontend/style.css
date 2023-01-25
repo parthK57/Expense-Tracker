@@ -124,3 +124,86 @@ form {
 #hide {
   display: none;
 }
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #000;
+}
+
+.separator:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: .25em;
+}
+
+.stats-expense {
+  color: #1c2321 !important;
+  border-radius: 20px;
+  /* background-color: rgb(221, 238, 255); */
+  background-color: #f7f5f5;
+  box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1);
+  height: 400px;
+  width: 80%;
+}
+
+@media screen and (max-width: 989px) {
+  .stats-expense{
+    width: 100%;
+  }
+}
+
+.stats-info{
+  font-size: 18px;
+  display: flex;
+  height: 35px;
+  padding: 5px;
+  margin-top: 7px;
+  align-content: center;
+  justify-content: space-between;
+}
+
+#networth{
+  color: rgb(63, 63, 190);
+  border-radius: 20px;
+  background-color: rgb(223, 223, 249);
+}
+
+#credit-score{
+  color: rgb(76, 163, 76);
+  border-radius: 20px;
+  background-color: rgb(209, 247, 209);
+}
+
+#debit-score{
+  color: rgb(226, 3, 47);
+  border-radius: 20px;
+  background-color: rgb(249, 218, 224);
+}
+
+#balance{
+  border-radius: 20px;
+  background-color: rgb(230, 228, 228);
+}
+
+#score{
+  border-top: 1px solid black;
+  margin-top: 55px;
+}
+
+#leader-bord-container{
+  
+  border-radius: 20px;
+  /* background-color: rgb(221, 238, 255); */
+  background-color: #f7f5f5;
+  box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1);
+}
