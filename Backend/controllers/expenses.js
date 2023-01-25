@@ -59,7 +59,7 @@ exports.getExpensesHandler = async (req, res, next) => {
     "SELECT * FROM users WHERE email = ?",
     [email],
     (err, results) => {
-      if (err) res.status(500).send("SERVER FUCKED");
+      if (err) res.status(500).send("INTERNAL SERVER ERROR");
       else {
         const hashedPassword = results[0].password;
         bcrpyt.compare(password, hashedPassword, (err, result) => {
@@ -91,7 +91,7 @@ exports.deleteExpensesHandler = async (req, res, next) => {
     "SELECT * FROM users WHERE email = ?",
     [email],
     (err, results) => {
-      if (err) return res.status(500).send("SERVER FUCKED");
+      if (err) return res.status(500).send("INTERNAL SERVER ERROR");
       else {
         const hashedPassword = results[0].password;
         bcrpyt.compare(password, hashedPassword, (err, result) => {
@@ -104,7 +104,7 @@ exports.deleteExpensesHandler = async (req, res, next) => {
                 (err, results) => {
                   // console.log(err);
                   // console.log(results);
-                  if (err) return res.status(500).send("SERVER FUCKED");
+                  if (err) return res.status(500).send("INTERNAL SERVER ERROR");
                   else return res.status(200).send("OK");
                 }
               );

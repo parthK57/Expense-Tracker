@@ -1,6 +1,16 @@
 const submitBtn = document.querySelector("#submit");
+const premiumBtn = document.querySelector("#premium-btn");
+const logOutBtn = document.querySelector("#logout-btn");
 const email = sessionStorage.getItem("email");
 const password = sessionStorage.getItem("password");
+
+// Logout
+logOutBtn.addEventListener("click", logoutUser);
+function logoutUser() {
+  sessionStorage.removeItem("email");
+  sessionStorage.removeItem("password");
+  location.replace("http://127.0.0.1:5500/Frontend/login.html");
+}
 
 // Submitting Details
 submitBtn.addEventListener("click", submitDetails);
@@ -43,7 +53,6 @@ function write(money, description, category, timestamp) {
   const cardBody = document.createElement("div");
   const amountSpan = document.createElement("span");
   const descriptionSpan = document.createElement("span");
-  const categorySpan = document.createElement("span");
   const timestampSpan = document.createElement("span");
   const deleteBtn = document.createElement("button");
 
@@ -78,7 +87,6 @@ function write(money, description, category, timestamp) {
     cardBody.className = "card-body d-flex flex-column";
     amountSpan.innerText = `Amount = ${money}`;
     descriptionSpan.innerText = `Description = ${description}`;
-    categorySpan.innerText = `Category = ${category}`;
     timestampSpan.innerText = `Time Stamp = ${timestamp}`;
     timestampSpan.className = "d-flex justify-content-between";
 
@@ -88,7 +96,6 @@ function write(money, description, category, timestamp) {
     card.appendChild(cardBody);
     cardBody.appendChild(amountSpan);
     cardBody.appendChild(descriptionSpan);
-    cardBody.appendChild(categorySpan);
     cardBody.appendChild(timestampSpan);
     timestampSpan.appendChild(deleteBtn);
   } else if (category == "Debit") {
@@ -100,7 +107,6 @@ function write(money, description, category, timestamp) {
     cardBody.className = "card-body d-flex flex-column";
     amountSpan.innerText = `Amount = ${money}`;
     descriptionSpan.innerText = `Description = ${description}`;
-    categorySpan.innerText = `Category = ${category}`;
     timestampSpan.innerText = `Time Stamp = ${timestamp}`;
     timestampSpan.className = "d-flex justify-content-between";
 
@@ -110,7 +116,6 @@ function write(money, description, category, timestamp) {
     card.appendChild(cardBody);
     cardBody.appendChild(amountSpan);
     cardBody.appendChild(descriptionSpan);
-    cardBody.appendChild(categorySpan);
     cardBody.appendChild(timestampSpan);
     timestampSpan.appendChild(deleteBtn);
   }
@@ -141,3 +146,80 @@ function preload(email, password) {
 }
 
 preload(email, password);
+
+// Event Listener for premium button
+function premiumVerifier(email) {
+  const verify = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/verifyUser", {
+        email: email,
+      });
+      const name = res.data.username;
+      const parentDiv = document.querySelector("#form-heading");
+      if (res.data.premiumStatus == 1) {
+        premiumBtn.setAttribute("id", "hide");
+        parentDiv.innerText = `Account: ${name}★`;
+      }
+      else{
+        parentDiv.innerText = `Account: ${name}`;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  verify();
+}
+premiumVerifier(email);
+
+premiumBtn.addEventListener("click", firePremium);
+function firePremium(e) {
+  e.preventDefault();
+  const reqOrder = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/getorderid", {
+        email: email,
+        password: password,
+      });
+      console.log(res);
+      const data = res.data;
+      var options = {
+        key: data.key_id, // Enter the Key ID generated from the Dashboard
+        // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "Expense Tracker",
+        description: "Premium Membership",
+        order_id: `${data.id}`, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        prefill: {
+          email: `${email}`,
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+        handler: async function (res) {
+          await axios.post(
+            "http://localhost:5000/transactionstatus",
+            {
+              order_id: options.order_id,
+              payment_id: res.razorpay_payment_id,
+            },
+            {
+              headers: {
+                email: email,
+                password: password,
+              },
+            }
+          );
+          alert("Transaction successful!");
+        },
+      };
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  reqOrder();
+}

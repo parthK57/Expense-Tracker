@@ -62,3 +62,20 @@ exports.loginHandler = async (req, res, next) => {
     }
   );
 };
+
+exports.verifyUserHandler = async (req, res, next) => {
+  const email = req.body.email;
+
+  await db.execute(
+    "SELECT premiumStatus, username FROM users WHERE email = ?",
+    [email],
+    (err, results) => {
+      if (err) console.log(err);
+      else {
+        const isVerified = (1 === results[0].premiumStatus);
+        if (isVerified) res.status(200).send(results[0]);
+        else res.status(200).send(results[0]);
+      }
+    }
+  );
+};

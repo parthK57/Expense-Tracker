@@ -14,7 +14,7 @@ form {
   border-radius: 20px;
   background-color: #f7f5f5;
   box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1);
-  height: 470px;
+  height: 495px;
 }
 
 .success-notify {
@@ -64,7 +64,7 @@ form {
   /* box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1); */
 }
 
-#card-credit{
+#card-credit {
   background-color: #e6ffe9;
   border: none;
   color: #000000;
@@ -72,13 +72,13 @@ form {
   margin-top: 5px;
 }
 
-#card-header-credit{
+#card-header-credit {
   color: green;
   font-size: 17px;
   font-weight: 600;
 }
 
-#card-debit{
+#card-debit {
   background-color: #ffecec;
   border: none;
   color: #000000;
@@ -86,9 +86,41 @@ form {
   margin-top: 5px;
 }
 
-#card-header-debit{
+#card-header-debit {
   color: crimson;
   font-size: 17px;
   font-weight: 600;
 }
 
+@media screen and (min-width: 990px) {
+  #logout-btn {
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  #logout-btn {
+    margin-top: 10px;
+    width: 95px;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  #premium-btn {
+    margin-top: 10px;
+    width: 95px;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .navbar-nav {
+    width: 100% !important;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+#hide {
+  display: none;
+}
