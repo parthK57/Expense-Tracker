@@ -72,8 +72,10 @@ function write(money, description, category, timestamp) {
         timestamp: timestamp,
         category: category,
       });
+      console.log(res);
       if (res.status == 200) {
         expenseList.removeChild(card);
+        window.location.href = "http://127.0.0.1:5500/Frontend/expense.html";
       }
     };
     deleteCard();

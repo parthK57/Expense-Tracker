@@ -94,7 +94,7 @@ exports.leaderBoardHandler = async (req, res) => {
           db.execute("SELECT username, score FROM users ORDER BY score DESC LIMIT 10;", (err, results) => {
             if(err) console.log(err);
             else{
-              console.log(results);
+              //console.log(results);
               res.status(200).send(results);
             }
           })

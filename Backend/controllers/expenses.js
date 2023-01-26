@@ -187,9 +187,9 @@ exports.deleteExpensesHandler = async (req, res, next) => {
                             let networth = data.networth;
                             let debitAmount = data.debitAmount;
 
-                            creditAmount = creditAmount - money;
-                            balance = balance - money;
-                            networth = networth - money;
+                            creditAmount = parseInt(creditAmount) - parseInt(money);
+                            balance = parseInt(balance) - parseInt(money);
+                            networth = parseInt(networth) - parseInt(money);
                             if (
                               networth <= 0 ||
                               debitAmount == 0 ||
@@ -198,7 +198,53 @@ exports.deleteExpensesHandler = async (req, res, next) => {
                               score = 0;
                             else score = networth / debitAmount;
                             db.execute(
-                              "UPDATE users SET creditAmount = ?, debitAmount = ?, balence = ?, networth = ? WHERE email = ?",
+                              "UPDATE users SET creditAmount = ?, debitAmount = ?, balance = ?, networth = ? WHERE email = ?",
+                              [
+                                creditAmount,
+                                debitAmount,
+                                balance,
+                                networth,
+                                email,
+                              ],
+                              (err, results) => {
+                                if (err) {
+                                  console.log(err);
+                                  res.status(500).send("SERVER ERROR");
+                                } else {
+                                  return res.status(200).send("OK");
+                                }
+                              }
+                            );
+                          }
+                        }
+                      );
+                    } else {
+                      db.execute(
+                        "SELECT creditAmount, debitAmount, balance, networth FROM users WHERE email = ?",
+                        [email],
+                        (err, results) => {
+                          if (err) {
+                            console.log(err);
+                            res.status(500).send("Server Error");
+                          } else {
+                            const data = results[0];
+                            let creditAmount = data.creditAmount;
+                            let balance = data.balance;
+                            let networth = data.networth;
+                            let debitAmount = data.debitAmount;
+
+                            debitAmount = parseInt(debitAmount) - parseInt(money);
+                            balance = parseInt(balance) + parseInt(money);
+                            networth = parseInt(networth) - parseInt(money);
+                            if (
+                              networth <= 0 ||
+                              debitAmount == 0 ||
+                              debitAmount == null
+                            )
+                              score = 0;
+                            else score = networth / debitAmount;
+                            db.execute(
+                              "UPDATE users SET creditAmount = ?, debitAmount = ?, balance = ?, networth = ? WHERE email = ?",
                               [
                                 creditAmount,
                                 debitAmount,
