@@ -121,7 +121,7 @@ form {
   }
 }
 
-#hide {
+.hide {
   display: none;
 }
 
@@ -173,18 +173,21 @@ form {
 }
 
 #networth{
+  padding-right: 8px;
   color: rgb(63, 63, 190);
   border-radius: 20px;
   background-color: rgb(223, 223, 249);
 }
 
 #credit-score{
+  padding-right: 8px;
   color: rgb(76, 163, 76);
   border-radius: 20px;
   background-color: rgb(209, 247, 209);
 }
 
 #debit-score{
+  padding-right: 8px;
   color: rgb(226, 3, 47);
   border-radius: 20px;
   background-color: rgb(249, 218, 224);
@@ -192,16 +195,17 @@ form {
 
 #balance{
   border-radius: 20px;
+  padding-right: 8px;
   background-color: rgb(230, 228, 228);
 }
 
 #score{
   border-top: 1px solid black;
   margin-top: 55px;
+  padding-right: 8px;
 }
 
 #leader-bord-container{
-  
   border-radius: 20px;
   /* background-color: rgb(221, 238, 255); */
   background-color: #f7f5f5;

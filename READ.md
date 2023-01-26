@@ -9,7 +9,7 @@ I am using MySQL as a Database and Express JS for the back-end of this applicati
 
 >CREATE DATABASE \`expensetracker\` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
-## TABLE - USERS
+## TABLE - EXPENSES
 
 >CREATE TABLE \`expenses\` (
   \`id\` int NOT NULL AUTO_INCREMENT,
@@ -22,7 +22,7 @@ I am using MySQL as a Database and Express JS for the back-end of this applicati
   UNIQUE KEY \`id_UNIQUE\` (\`id\`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-## TABLE - EXPENSES
+## TABLE - USERS
 
 >CREATE TABLE \`users\` (
   \`id\` int NOT NULL AUTO_INCREMENT,

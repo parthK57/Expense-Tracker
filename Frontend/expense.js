@@ -38,6 +38,7 @@ function submitDetails(e) {
       const timestamp = res.data[0].timestamp;
 
       write(money, description, category, timestamp);
+      window.location.href = "http://127.0.0.1:5500/Frontend/expense.html";
     } catch (error) {
       console.log(error);
     }
@@ -157,11 +158,16 @@ function premiumVerifier(email) {
       const name = res.data.username;
       const parentDiv = document.querySelector("#form-heading");
       if (res.data.premiumStatus == 1) {
-        premiumBtn.setAttribute("id", "hide");
+        premiumBtn.setAttribute("class", "hide");
         parentDiv.innerText = `Account: ${name}★`;
-      }
-      else{
+        premiumStatsFeature(email);
+        premiumLeaderBoardFeature(email);
+      } else {
         parentDiv.innerText = `Account: ${name}`;
+        const premiumRowElement0 = document.querySelector("#premium-row-0");
+        const premiumRowElement1 = document.querySelector("#premium-row-1");
+        premiumRowElement0.setAttribute("class", "hide");
+        premiumRowElement1.setAttribute("class", "hide");
       }
     } catch (error) {
       console.log(error);
@@ -213,6 +219,7 @@ function firePremium(e) {
             }
           );
           alert("Transaction successful!");
+          window.location.href = "http://127.0.0.1:5500/Frontend/expense.html";
         },
       };
       const rzp1 = new Razorpay(options);
@@ -222,4 +229,62 @@ function firePremium(e) {
     }
   };
   reqOrder();
+}
+
+// Premium Feature 1 - Stats
+function premiumStatsFeature(email) {
+  const requestUserData = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/premium/getUserData",
+        {
+          email: email,
+        }
+      );
+      const data = res.data[0];
+      //console.log(data);
+      const score = data.score;
+      const balance = data.balance;
+      const creditAmount = data.creditAmount;
+      const debitAmount = data.debitAmount;
+      const networth = data.networth;
+
+      const networthElement = document.querySelector("#networth-value");
+      const debitElement = document.querySelector("#debit-value");
+      const creditElement = document.querySelector("#credit-value");
+      const balenceElement = document.querySelector("#balance-value");
+      const scoreElement = document.querySelector("#score-value");
+      networthElement.innerText = `₹${networth}`;
+      debitElement.innerText = `₹${debitAmount}`;
+      creditElement.innerText = `₹${creditAmount}`;
+      balenceElement.innerText = `₹${balance}`;
+      scoreElement.innerText = `${score}`;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  requestUserData();
+}
+
+function premiumLeaderBoardFeature(email) {
+  const requestAllUsersData = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/premium/leaderBoard",
+        {
+          email: email,
+        }
+      );
+      const rawData = res.data;
+      for (let i = 0; i < rawData.length; i++) {
+        const span = document.querySelector(`#leader-board-${i}`);
+        span.innerText = `${i + 1}) ${rawData[i].username} - ${
+          rawData[i].score
+        }`;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  requestAllUsersData();
 }
