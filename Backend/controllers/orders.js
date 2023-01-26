@@ -19,8 +19,8 @@ exports.getOrderHandler = async (req, res, next) => {
           res.send(401).send("INVALID CREDENTIALS");
         } else if (result) {
           const instance = new Razorpay({
-            key_id: "rzp_test_b3BSpQ5HEfWLTR",
-            key_secret: "yK3n63Hnb2xhraDHssxIBpbW",
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET,
           });
           instance.orders
             .create({

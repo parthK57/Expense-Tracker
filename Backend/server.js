@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
 
+dotenv.config();
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -18,6 +20,7 @@ const handleTransactionRoute = require("./routes/orders");
 const verifyUserRoute = require("./routes/users");
 const getUserDataRoute = require("./routes/expenses");
 const generateLBRoute = require("./routes/users");
+const resetPasswordRoute = require("./routes/users");
 
 app.use(postUserRoute);
 app.use(loginRoute);
@@ -29,5 +32,6 @@ app.use(handleTransactionRoute);
 app.use(verifyUserRoute);
 app.use(getUserDataRoute);
 app.use(generateLBRoute);
+app.use(resetPasswordRoute);
 
 app.listen(5000, () => console.log("Server live at: http://localhost:5000"));
