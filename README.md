@@ -43,5 +43,5 @@ I am using MySQL as a Database and Express JS for the back-end of this applicati
   UNIQUE KEY \`email_UNIQUE\` (\`email\`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
+*Do not forget to update your dotenv file.*
 *Happy Hacking!*

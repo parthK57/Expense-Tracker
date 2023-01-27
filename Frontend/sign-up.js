@@ -28,7 +28,7 @@ async function postUser(e) {
       setTimeout(() => {
         body.removeChild(notify);
         window.location.href="http://127.0.0.1:5500/Frontend/login.html";
-      }, 1500);
+      }, 500);
     }
   } catch (error) {
     if (error.response.status == 400) {
