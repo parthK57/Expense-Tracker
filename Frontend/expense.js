@@ -168,8 +168,11 @@ function premiumVerifier(email) {
         parentDiv.innerText = `Account: ${name}`;
         const premiumRowElement0 = document.querySelector("#premium-row-0");
         const premiumRowElement1 = document.querySelector("#premium-row-1");
+        const reportsLink = document.querySelector("#report-link");
+        reportsLink.setAttribute("class", "hide");
         premiumRowElement0.setAttribute("class", "hide");
         premiumRowElement1.setAttribute("class", "hide");
+        
       }
     } catch (error) {
       console.log(error);
