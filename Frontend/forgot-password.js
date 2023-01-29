@@ -1,18 +1,20 @@
 const recoverBtn = document.querySelector("#recover-btn");
-const username = document.querySelector("#username").value;
-const email = document.querySelector("#email").value;
 
 recoverBtn.addEventListener("click", recoverAccount);
 function recoverAccount(e) {
-  console.log(username, email);
+  e.preventDefault();
 
-  const recover = async () => {
+  const recover = () => {
+    const email = document.querySelector("#email").value;
+    const username = document.querySelector("#username").value;
+    console.log(username, email);
     try {
-      const res = await axios.post("http://localhost:5000/resetPassword", {
+      const res = axios.post("http://localhost:5000/resetPassword", {
         username: username,
         email: email,
       });
-      if (res.status == 200) {
+      console.log(res );
+      if (res != null) {
         const notify = document.createElement("div");
         const body = document.querySelector("body");
         notify.className =
@@ -21,14 +23,16 @@ function recoverAccount(e) {
         body.appendChild(notify);
       }
     } catch (error) {
-      console.log(error);
-      const notify = document.createElement("div");
-      const body = document.querySelector("body");
-      notify.className =
-        "container d-flex justify-content-center align-content-center failure-notify";
-      notify.innerText = "Error has occured!";
-      body.appendChild(notify);
+      console.log(error.response.status);
+      if (error.response.status == 500) {
+        const notify = document.createElement("div");
+        const body = document.querySelector("body");
+        notify.className =
+          "container d-flex justify-content-center align-content-center failure-notify";
+        notify.innerText = "Error has occured!";
+        body.appendChild(notify);
+      }
     }
-    recover();
   };
+  recover();
 }

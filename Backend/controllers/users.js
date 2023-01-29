@@ -4,6 +4,7 @@ const bcrpyt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 
 const sgMail = require("@sendgrid/mail");
+const e = require("express");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -130,87 +131,101 @@ exports.leaderBoardHandler = async (req, res) => {
 exports.resetPasswordHandler = async (req, res) => {
   const email = req.body.email;
   const username = req.body.username;
-
-  const UUID = uuidv4();
-  const msg = {
-    to: email,
-    from: "parth.dev5757@gmail.com",
-    subject: "Reset your password.",
-    text: `Hello ${username}!,Click on that link to reset your password!
-      <p>http://localhost:5000/resetpassword/generatepassword?uuid=${UUID}&email=${email}</p>
-    `,
-  };
-
-  const sendEmail = async () => {
-    try {
-      const response = await sgMail.send(msg);
-      if (
-        response[0].statusCode == 200 ||
-        response[0].statusCode == 201 ||
-        response[0].statusCode == 202
-      )
+  var UUID = uuidv4();
+  await db.execute(
+    `UPDATE expensetracker.passwordrecovery SET uuid = '${UUID}', isActive = 1 WHERE email = '${email}'`,
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("SERVER ERROR");
+      } else {
+        console.log("IN else of update uuid and isActive db exe");
         db.execute(
-          "INSERT INTO passwordrecovery (uuid, isActive) VALUES (?,?)",
-          [UUID, 1],
+          `SELECT id from passwordrecovery WHERE email = '${email}'`,
           (err, results) => {
             if (err) {
               console.log(err);
-              res.status(500).send("SERVER ERROR");
-            } else res.status(200).send("OK");
+              return res.status(500).send("Server Error");
+            } else {
+              //console.log(results);
+              const id = results[0].id;
+              var msg = {
+                to: email,
+                from: "parth.dev5757@gmail.com",
+                subject: "Reset your password.",
+                text: `Hello ${username}!,Click on that link to reset your password!
+                <p>http://localhost:5000/resetpassword/generatepassword?id=${id}</p>
+              `,
+              };
+
+              const sendEmail = async () => {
+                try {
+                  const response = await sgMail.send(msg);
+                  if (
+                    response[0].statusCode == 200 ||
+                    response[0].statusCode == 201 ||
+                    response[0].statusCode == 202
+                  ) {
+                    res.send("OK");
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
+              };
+              sendEmail();
+            }
           }
         );
-    } catch (error) {
-      console.log(error);
+      }
     }
-  };
-  sendEmail();
+  );
 };
 
 exports.passwordGenerator = async (req, res, next) => {
-  const data = req._parsedUrl.query.split("&");
-  const UUID = data[0].split("=")[1];
-  const email = data[1].split("=")[1];
-  let flag = false;
+  var id = req.query.id;
 
+  console.log(id);
   await db.execute(
-    "SELECT uuid, isActive FROM passwordrecovery WHERE email = ?",
-    [email],
+    "SELECT uuid, isActive FROM passwordrecovery WHERE id = ?",
+    [id],
     (err, results) => {
       if (err) {
         console.log(err);
         res.status(500).send("SERVER ERROR");
       } else {
+        //console.log(results);
         const response = results[0];
-        const UUID_DB = response.uuid;
-        const isActive = response.isActive;
+        const isActive = parseInt(response.isActive);
 
-        if ((isActive == 1) & (UUID_DB == UUID)) {
-          flag = true;
+        if (isActive == 1) {
+          db.execute(
+            "UPDATE passwordrecovery SET uuid = ?, isActive = 0 WHERE id = ?",
+            [null, id],
+            (err, results) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).send("SERVER ERROR");
+              } else {
+                console.log(results);
+                return res
+                  .status(200)
+                  .sendFile(
+                    path.join(
+                      __dirname,
+                      "..",
+                      "views",
+                      "password-reset-form.html"
+                    )
+                  );
+              }
+            }
+          );
+        } else {
+          res.status(408).send("SESSION EXPIRED");
         }
       }
     }
   );
-
-  if (flag) {
-    await db.execute(
-      "INSERT INTO passwordrecovery (uuid, isActive) VALUES (?,?)",
-      [null, 0],
-      (err, results) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send("SERVER ERROR");
-        } else {
-          res
-            .status(200)
-            .sendFile(
-              path.join(__dirname, "..", "views", "password-reset-form.html")
-            );
-        }
-      }
-    );
-  } else {
-    res.status(408).send("SESSION EXPIRED");
-  }
 };
 
 exports.updateDetailsHandler = async (req, res) => {
@@ -225,7 +240,7 @@ exports.updateDetailsHandler = async (req, res) => {
     (err, results) => {
       if (err) {
         console.log(err);
-        res.status(500).send("SERVER ERROR!");
+        return res.status(500).send("SERVER ERROR!");
       } else {
         res.status(200).send("OK!");
       }
