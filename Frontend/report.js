@@ -1,6 +1,15 @@
 const email = sessionStorage.getItem("email");
 const password = sessionStorage.getItem("password");
 const monthTableBody = document.querySelector("#month-table-body");
+const logOutBtn = document.querySelector("#logout-btn");
+
+// Logout
+logOutBtn.addEventListener("click", logoutUser);
+function logoutUser() {
+  sessionStorage.removeItem("email");
+  sessionStorage.removeItem("password");
+  location.replace("http://127.0.0.1:5500/Frontend/login.html");
+}
 
 const date = new Date();
 const currentDate = date.getDate();
