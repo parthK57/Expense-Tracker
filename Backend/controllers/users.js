@@ -1,10 +1,8 @@
-const path = require("path");
 const db = require("../database/db");
 const bcrpyt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 
 const sgMail = require("@sendgrid/mail");
-const e = require("express");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -214,23 +212,58 @@ exports.resetPasswordFormHandler = (req, res, next) => {
                 } else {
                   // console.log(results);
                   res.send(`<html>
+                  <link
+                  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+                  rel="stylesheet"
+                  integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+                  crossorigin="anonymous"
+                  />
+                  <style>
+                  #navbar {
+                    background-color: #f7f5f5;
+                  }
+                  form {
+                    color: #1c2321 !important;
+                    border-radius: 20px;
+                    background-color: #f7f5f5;
+                    box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1);
+                  }
+                  </style>
                   <script>
                       function formsubmitted(e){
                           e.preventDefault();
                           console.log('called')
                       }
                   </script>
-                  <form action="/updatepassworddetails" method="get">
-                      <label for="email">Email:</label>
-                      <br />
-                      <input name="email" type="email" required></input>
-                      <br />
-                      <label for="">Enter New password:</label>
-                      <br />
-                      <input name="newpassword" type="password" required></input>
-                      <br />
-                      <button>reset password</button>
+                  <nav class="navbar navbar-expand-lg" id="navbar">
+                    <div class="container-fluid">
+                      <a class="navbar-brand" href="">EXPENSE TRACKER</a>
+                    </div>
+                  </div>
+                  </nav>
+                  <div
+                  class="container d-flex flex-column align-items-center justify-content-center mt-5"
+                  >
+                  <form action="/updatepassworddetails" autocomplete="off" class="p-5" method="get">
+                  <div
+                  class="mb-3 d-flex justify-content-center align-content-center"
+                  style="font-size: 25px; border-bottom: 1px solid black"
+                  >
+                    Details
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input name="email" type="email" class="form-control" required></input>
+                  </div>
+                  <div class="mb-3">
+                    <label for="newpassword" class="form-label">New Password:</label>
+                    <input name="newpassword" type="password" class="form-control" required></input>
+                  </div>
+                  <button type="submit" class="btn btn-success">
+                    Reset Password
+                  </button>
                   </form>
+                  </div>
               </html>`);
                   res.end();
                 }
@@ -249,7 +282,7 @@ exports.resetPasswordFormHandler = (req, res, next) => {
 exports.passwordResetExecuteHandler = async (req, res) => {
   const email = req.query.email;
   const password = req.query.newpassword;
-  
+
   const hashedPassword = await bcrpyt.hash(password, 10);
 
   await db.execute(
@@ -259,7 +292,35 @@ exports.passwordResetExecuteHandler = async (req, res) => {
         console.log(err);
         return res.status(500).send("SERVER ERROR!");
       } else {
-        res.status(200).send(results);
+        res.status(200).send(`
+        <html>
+          <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          ntegrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+          crossorigin="anonymous"
+          />
+          <style>
+            #navbar {
+              background-color: #f7f5f5;
+            }
+            h1{
+              color: green;
+            }
+          </style>
+          <nav class="navbar navbar-expand-lg" id="navbar">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="">EXPENSE TRACKER</a>
+            </div>
+          </nav>
+          <div
+          class="container d-flex flex-column align-items-center justify-content-center mt-5"
+          >
+            <h1>SUCCUESS!</h1>
+          </div>
+        </html>
+        `);
+        res.end();
       }
     }
   );
