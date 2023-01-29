@@ -5,6 +5,6 @@ const router = express.Router();
 // CONTROLLERS
 const reports = require("../controllers/reports");
 
-router.get("/reports/users", reports.getReportsHandler);
+router.get("/reports", reports.getReportsHandler);
 
 module.exports = router;
