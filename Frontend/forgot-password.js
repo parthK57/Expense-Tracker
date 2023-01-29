@@ -9,7 +9,7 @@ function recoverAccount(e) {
     const username = document.querySelector("#username").value;
     console.log(username, email);
     try {
-      const res = axios.post("http://localhost:5000/resetPassword", {
+      const res = axios.post("http://localhost:5000/resetpasswordrequsthandler", {
         username: username,
         email: email,
       });

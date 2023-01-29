@@ -23,6 +23,7 @@ const generateLBRoute = require("./routes/users");
 const resetPasswordRoute = require("./routes/users");
 const passwordGeneratorRoute = require("./routes/users");
 const updatePasswordRoute = require("./routes/users");
+const reportGeneratorRoute = require("./routes/reports");
 
 app.use(postUserRoute);
 app.use(loginRoute);
@@ -37,5 +38,6 @@ app.use(generateLBRoute);
 app.use(resetPasswordRoute);
 app.use(passwordGeneratorRoute);
 app.use(updatePasswordRoute);
+app.use(reportGeneratorRoute);
 
 app.listen(5000, () => console.log("Server live at: http://localhost:5000"));

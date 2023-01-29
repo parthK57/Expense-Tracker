@@ -9,8 +9,8 @@ router.post("/postuser", users.postUserHandler);
 router.post("/login", users.loginHandler);
 router.post("/verifyUser", users.verifyUserHandler);
 router.post("/premium/leaderBoard", users.leaderBoardHandler);
-router.post("/resetPassword", users.resetPasswordHandler);
-router.post("/updateddetails", users.updateDetailsHandler);
-router.get("/resetpassword/:id", users.passwordGenerator);
+router.post("/resetpasswordrequsthandler", users.resetPasswordRequestHandler);
+router.get("/resetpasswordform/:id", users.resetPasswordFormHandler);
+router.get("/updatepassworddetails", users.passwordResetExecuteHandler);
 
 module.exports = router;

@@ -5,3 +5,6 @@ let c = 1;
 if (c == 1 && a == b) {
   console.log(true);
 }
+
+var name = 'Parth Kolgiri';
+var email = 'parth.kolgiri32@gmail.com';

@@ -128,7 +128,7 @@ exports.leaderBoardHandler = async (req, res) => {
   );
 };
 
-exports.resetPasswordHandler = async (req, res) => {
+exports.resetPasswordRequestHandler = async (req, res) => {
   const email = req.body.email;
   const username = req.body.username;
   var UUID = uuidv4();
@@ -139,7 +139,6 @@ exports.resetPasswordHandler = async (req, res) => {
         console.log(err);
         return res.status(500).send("SERVER ERROR");
       } else {
-        console.log("IN else of update uuid and isActive db exe");
         db.execute(
           `SELECT id from passwordrecovery WHERE email = '${email}'`,
           (err, results) => {
@@ -153,8 +152,10 @@ exports.resetPasswordHandler = async (req, res) => {
                 to: email,
                 from: "parth.dev5757@gmail.com",
                 subject: "Reset your password.",
-                text: `Hello ${username}!,Click on that link to reset your password!
-                <p>http://localhost:5000/resetpassword/generatepassword?id=${id}</p>
+                html: `
+                <h1>Hello ${username}!</h1>
+                <p>Click on the button to reset your password!</p>
+                <button id="reset-password"><a href="http://localhost:5000/resetpasswordform/reset?id=${id}">Reset Password</a></button>
               `,
               };
 
@@ -181,68 +182,84 @@ exports.resetPasswordHandler = async (req, res) => {
   );
 };
 
-exports.passwordGenerator = async (req, res, next) => {
-  var id = req.query.id;
+exports.resetPasswordFormHandler = (req, res, next) => {
+  const id = req.query.id;
 
-  console.log(id);
-  await db.execute(
-    "SELECT uuid, isActive FROM passwordrecovery WHERE id = ?",
-    [id],
-    (err, results) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send("SERVER ERROR");
-      } else {
-        //console.log(results);
-        const response = results[0];
-        const isActive = parseInt(response.isActive);
+  // console.log(id);
 
-        if (isActive == 1) {
-          db.execute(
-            "UPDATE passwordrecovery SET uuid = ?, isActive = 0 WHERE id = ?",
-            [null, id],
-            (err, results) => {
-              if (err) {
-                console.log(err);
-                return res.status(500).send("SERVER ERROR");
-              } else {
-                console.log(results);
-                return res
-                  .status(200)
-                  .sendFile(
-                    path.join(
-                      __dirname,
-                      "..",
-                      "views",
-                      "password-reset-form.html"
-                    )
-                  );
-              }
-            }
-          );
+  const func = async (id) => {
+    await db.execute(
+      "SELECT uuid, isActive FROM passwordrecovery WHERE id = ?",
+      [id],
+      (err, results) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send("SERVER ERROR");
         } else {
-          res.status(408).send("SESSION EXPIRED");
+          // console.log(
+          //   "Inside the select statement - SELECT uuid, isActive FROM passwordrecovery WHERE id = ?"
+          // );
+          // console.log(results);
+          const response = results[0];
+          const isActive = parseInt(response.isActive);
+
+          if (isActive == 1) {
+            db.execute(
+              "UPDATE passwordrecovery SET uuid = ?, isActive = 0 WHERE id = ?",
+              [null, id],
+              (err, results) => {
+                if (err) {
+                  console.log(err);
+                  return res.status(500).send("SERVER ERROR");
+                } else {
+                  // console.log(results);
+                  res.send(`<html>
+                  <script>
+                      function formsubmitted(e){
+                          e.preventDefault();
+                          console.log('called')
+                      }
+                  </script>
+                  <form action="/updatepassworddetails" method="get">
+                      <label for="email">Email:</label>
+                      <br />
+                      <input name="email" type="email" required></input>
+                      <br />
+                      <label for="">Enter New password:</label>
+                      <br />
+                      <input name="newpassword" type="password" required></input>
+                      <br />
+                      <button>reset password</button>
+                  </form>
+              </html>`);
+                  res.end();
+                }
+              }
+            );
+          } else {
+            res.status(408).send("SESSION EXPIRED");
+          }
         }
       }
-    }
-  );
+    );
+  };
+  func(id);
 };
 
-exports.updateDetailsHandler = async (req, res) => {
-  const data = req.body;
-  const email = data.email;
-  const password = data.password;
+exports.passwordResetExecuteHandler = async (req, res) => {
+  const email = req.query.email;
+  const password = req.query.newpassword;
+  
   const hashedPassword = await bcrpyt.hash(password, 10);
 
   await db.execute(
-    "UPDATE users SET password = ? WHERE email = ?;",
-    [hashedPassword, email],
+    `UPDATE expensetracker.users SET password = '${hashedPassword}' WHERE email = '${email}';`,
     (err, results) => {
       if (err) {
         console.log(err);
         return res.status(500).send("SERVER ERROR!");
       } else {
-        res.status(200).send("OK!");
+        res.status(200).send(results);
       }
     }
   );
