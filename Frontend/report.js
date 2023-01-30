@@ -261,3 +261,48 @@ function saveReport(e) {
   };
   requestSave();
 }
+
+function getReportHistory(email, password) {
+  const requestData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/reporthistory", {
+        headers: {
+          email: email,
+          password: password,
+        },
+      });
+      reportHistoryFiller(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  requestData();
+}
+getReportHistory(email, password);
+
+function reportHistoryFiller(data) {
+  const tableBody = document.querySelector("#report-history-table-body");
+
+  for (let i = 0; i < data.length; i++) {
+    const thSr = document.createElement("th");
+    const thDate = document.createElement("th");
+    const thLink = document.createElement("th");
+    const tr = document.createElement("tr");
+    const anchor = document.createElement("a");
+
+    thSr.setAttribute("scope", "col");
+    thDate.setAttribute("scope", "col");
+    thLink.setAttribute("scope", "col");
+    anchor.className = "link-info";
+    thSr.innerText = `${i + 1}`;
+    thDate.innerText = `${data[i].date}`;
+    anchor.setAttribute("href", `${data[i].link}`); 
+    anchor.innerText = "Download Link";
+
+    tableBody.appendChild(tr);
+    tr.appendChild(thSr);
+    tr.appendChild(thDate);
+    tr.appendChild(thLink);
+    thLink.appendChild(anchor);
+  }
+}

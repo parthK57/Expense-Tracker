@@ -1,8 +1,16 @@
 const bcrypt = require("bcrypt");
 const db = require("../database/db");
 const jsonexport = require("jsonexport");
-const AWS = require("aws-sdk");
+const S3Services = require("../services/S3Services");
 const { v4: uuidv4 } = require("uuid");
+
+const currentTime = new Date();
+const currentOffset = currentTime.getTimezoneOffset();
+const ISTOffset = 330;
+const ISTTime = new Date(
+  currentTime.getTime() + (ISTOffset + currentOffset) * 60000
+);
+const timestamp = `${ISTTime.getDate()}/${ISTTime.getMonth()}/${ISTTime.getFullYear()} ${ISTTime.getHours()}:${ISTTime.getMinutes()}:${ISTTime.getSeconds()}:${ISTTime.getMilliseconds()}`;
 
 const getReportsHandler = (req, res) => {
   const headers = req.headers;
@@ -38,35 +46,6 @@ const getReportsHandler = (req, res) => {
   accountVerifier();
 };
 
-function uploadToS3(data, fileName) {
-  const bucket_name = process.env.BUCKET_NAME;
-  const iam_user_key = process.env.IAM_USER_KEY;
-  const iam_user_secret = process.env.IAM_USER_SECRET;
-
-  let s3bucket = new AWS.S3({
-    accessKeyId: iam_user_key,
-    secretAccessKey: iam_user_secret,
-  });
-
-  let params = {
-    Bucket: bucket_name,
-    Key: fileName,
-    Body: data,
-    ACL: "public-read",
-  };
-  return new Promise((resolve, reject) => {
-    s3bucket.upload(params, (err, s3response) => {
-      if (err) {
-        console.log(err);
-        reject(err);
-      }
-      else {
-        resolve (s3response.Location);
-      }
-    });
-  })
-}
-
 const saveReportsHandler = (req, res) => {
   const headers = req.headers;
   const email = headers.email;
@@ -89,8 +68,17 @@ const saveReportsHandler = (req, res) => {
                   jsonexport(results, async (err, csv) => {
                     const csvFile = csv;
                     const fileName = `${email}/${new Date()}<>${uuidv4()}.csv`;
-                    const fileURL = await uploadToS3(csvFile, fileName);
-                    res.status(201).json(fileURL);
+                    const fileURL = await S3Services.uploadToS3(
+                      csvFile,
+                      fileName
+                    );
+                    db.execute(
+                      "INSERT INTO reporthistory (date,email ,link) VALUES (?,?,?)",
+                      [timestamp, email, fileURL],
+                      (err, results) => {
+                        res.status(201).json(fileURL);
+                      }
+                    );
                   });
                 }
               );
@@ -106,7 +94,42 @@ const saveReportsHandler = (req, res) => {
   accountVerifier();
 };
 
+const reportHistoryHandler = (req,res) => {
+  const headers = req.headers;
+  const email = headers.email;
+  const password = headers.password;
+  
+  const accountVerifier = async () => {
+    try {
+      await db.execute(
+        "SELECT password FROM users WHERE email = ?",
+        [email],
+        (err, results) => {
+          const hashedPassword = results[0].password;
+
+          bcrypt.compare(password, hashedPassword, (err, result) => {
+            if (result) {
+              db.execute(
+                "SELECT date, link FROM reporthistory WHERE email = ?",
+                [email],
+                (err, results) => {
+                  res.status(200).send(results);
+                }
+              );
+            }
+          });
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("server error");
+    }
+  };
+  accountVerifier();
+}
+
 module.exports = {
   getReportsHandler,
   saveReportsHandler,
+  reportHistoryHandler
 };

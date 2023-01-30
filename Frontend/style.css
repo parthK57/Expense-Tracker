@@ -133,17 +133,17 @@ form {
 
 .separator::before,
 .separator::after {
-  content: '';
+  content: "";
   flex: 1;
   border-bottom: 1px solid #000;
 }
 
 .separator:not(:empty)::before {
-  margin-right: .25em;
+  margin-right: 0.25em;
 }
 
 .separator:not(:empty)::after {
-  margin-left: .25em;
+  margin-left: 0.25em;
 }
 
 .stats-expense {
@@ -157,12 +157,12 @@ form {
 }
 
 @media screen and (max-width: 989px) {
-  .stats-expense{
+  .stats-expense {
     width: 100%;
   }
 }
 
-.stats-info{
+.stats-info {
   font-size: 18px;
   display: flex;
   height: 35px;
@@ -172,68 +172,76 @@ form {
   justify-content: space-between;
 }
 
-#networth{
+#networth {
   padding-right: 8px;
   color: rgb(63, 63, 190);
   border-radius: 20px;
   background-color: rgb(223, 223, 249);
 }
 
-#credit-score{
+#credit-score {
   padding-right: 8px;
   color: rgb(76, 163, 76);
   border-radius: 20px;
   background-color: rgb(209, 247, 209);
 }
 
-#debit-score{
+#debit-score {
   padding-right: 8px;
   color: rgb(226, 3, 47);
   border-radius: 20px;
   background-color: rgb(249, 218, 224);
 }
 
-#balance{
+#balance {
   border-radius: 20px;
   padding-right: 8px;
   background-color: rgb(230, 228, 228);
 }
 
-#score{
+#score {
   border-top: 1px solid black;
   margin-top: 55px;
   padding-right: 8px;
 }
 
-#leader-bord-container{
+#leader-bord-container {
   border-radius: 20px;
   /* background-color: rgb(221, 238, 255); */
   background-color: #f7f5f5;
   box-shadow: 10px 21px 56px -8px rgba(214, 214, 214, 1);
 }
 
-thead{
+thead {
   background-color: rgb(101, 181, 255) !important;
 }
 
-th{
+th {
   font-weight: 400 !important;
 }
 
 @media screen AND (max-width: 460px) {
-  #month-report{
+  #month-report {
     width: 590px !important;
   }
 
-  #month-table-title{
+  #month-table-title {
     width: 590px !important;
   }
 
-  #year-table-title{
+  #year-table-title {
+    width: 590px !important;
+  }
+  
+  #report-history-table-title {
     width: 590px !important;
   }
 
-  #year-report{
+  #year-report {
+    width: 590px !important;
+  }
+
+  #report-history-table {
     width: 590px !important;
   }
 }
