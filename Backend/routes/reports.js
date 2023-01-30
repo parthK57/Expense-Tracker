@@ -6,5 +6,6 @@ const router = express.Router();
 const reports = require("../controllers/reports");
 
 router.get("/reports", reports.getReportsHandler);
+router.get("/savereport", reports.saveReportsHandler);
 
 module.exports = router;

@@ -219,3 +219,21 @@ thead{
 th{
   font-weight: 400 !important;
 }
+
+@media screen AND (max-width: 460px) {
+  #month-report{
+    width: 590px !important;
+  }
+
+  #month-table-title{
+    width: 590px !important;
+  }
+
+  #year-table-title{
+    width: 590px !important;
+  }
+
+  #year-report{
+    width: 590px !important;
+  }
+}

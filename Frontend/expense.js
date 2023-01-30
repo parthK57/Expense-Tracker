@@ -252,14 +252,14 @@ function premiumStatsFeature(email) {
       const balance = data.balance;
       const creditAmount = data.creditAmount;
       const debitAmount = data.debitAmount;
-      const networth = data.networth;
+      // const networth = data.networth;
 
-      const networthElement = document.querySelector("#networth-value");
+      // const networthElement = document.querySelector("#networth-value");
       const debitElement = document.querySelector("#debit-value");
       const creditElement = document.querySelector("#credit-value");
       const balenceElement = document.querySelector("#balance-value");
       const scoreElement = document.querySelector("#score-value");
-      networthElement.innerText = `₹${networth}`;
+      // networthElement.innerText = `₹${networth}`;
       debitElement.innerText = `₹${debitAmount}`;
       creditElement.innerText = `₹${creditAmount}`;
       balenceElement.innerText = `₹${balance}`;

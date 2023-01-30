@@ -3,6 +3,7 @@ const password = sessionStorage.getItem("password");
 const monthTableBody = document.querySelector("#month-table-body");
 const yearTableBody = document.querySelector("#year-table-body");
 const logOutBtn = document.querySelector("#logout-btn");
+const saveBtn = document.querySelector("#save-report");
 
 // Logout
 logOutBtn.addEventListener("click", logoutUser);
@@ -79,7 +80,7 @@ const rules = [
   },
 ];
 
-const monthTableTile = document.querySelector("#table-title");
+const monthTableTile = document.querySelector("#month-table-title");
 monthTableTile.innerText = `Month - ${rules[currentMonth].name}`;
 
 function getTableData() {
@@ -181,21 +182,23 @@ function monthTableFiller(data) {
   }
 }
 
+let creditAmount = 0;
+let debitAmount = 0;
+let balance = 0;
 function yearTableFiller(data) {
   const firstMonth = parseInt(data[0].timestamp.split(" ")[0].split("/")[1]);
-  let creditAmount = 0;
-  let debitAmount = 0;
-  let balance = 0;
 
   for (let i = firstMonth; i <= 11; i++) {
     for (let j = 0; j < data.length; j++) {
       if (data[j].timestamp.split(" ")[0].split("/")[1] == i) {
         if (data[j].category == "Credit")
           creditAmount += parseInt(data[j].money);
-        else debitAmount += parseInt(data[j].money);
-        balance += creditAmount - debitAmount;
+        else if (data[j].category == "Debit")
+          debitAmount += parseInt(data[j].money);
       }
     }
+
+    balance = creditAmount - debitAmount;
 
     if (creditAmount != 0 || debitAmount != 0) {
       const tableRow = document.createElement("tr");
@@ -222,7 +225,39 @@ function yearTableFiller(data) {
 
       creditAmount = 0;
       debitAmount = 0;
-      balance = 0;
     }
   }
+}
+
+saveBtn.addEventListener("click", saveReport);
+function saveReport(e) {
+  e.preventDefault();
+  const requestSave = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/savereport", {
+        headers: {
+          email: email,
+          password: password,
+        },
+      });
+      console.log(response);
+      if (response.status == 201) {
+        const link = document.createElement("a");
+        const tableContainer = document.querySelector("#table-container");
+        link.className = "link-info";
+        link.setAttribute("href", `${response.data}`);
+        link.innerText = "Download Report";
+        tableContainer.appendChild(link);
+      }
+    } catch (error) {
+      console.log(error);
+      const link = document.createElement("p");
+      const tableContainer = document.querySelector("#table-container");
+      link.className = "link-dangler";
+      link.setAttribute("href", `${response.data}`);
+      link.innerText = "Server Error!";
+      tableContainer.appendChild(link);
+    }
+  };
+  requestSave();
 }
