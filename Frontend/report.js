@@ -1,6 +1,7 @@
 const email = sessionStorage.getItem("email");
 const password = sessionStorage.getItem("password");
 const monthTableBody = document.querySelector("#month-table-body");
+const yearTableBody = document.querySelector("#year-table-body");
 const logOutBtn = document.querySelector("#logout-btn");
 
 // Logout
@@ -103,6 +104,8 @@ function getTableData() {
           return obj;
         else return null;
       });
+
+      yearTableFiller(currentYearData);
     } catch (error) {
       console.log(error);
     }
@@ -174,6 +177,52 @@ function monthTableFiller(data) {
 
       creditAmount = 0;
       debitAmount = 0;
+    }
+  }
+}
+
+function yearTableFiller(data) {
+  const firstMonth = parseInt(data[0].timestamp.split(" ")[0].split("/")[1]);
+  let creditAmount = 0;
+  let debitAmount = 0;
+  let balance = 0;
+
+  for (let i = firstMonth; i <= 11; i++) {
+    for (let j = 0; j < data.length; j++) {
+      if (data[j].timestamp.split(" ")[0].split("/")[1] == i) {
+        if (data[j].category == "Credit")
+          creditAmount += parseInt(data[j].money);
+        else debitAmount += parseInt(data[j].money);
+        balance += creditAmount - debitAmount;
+      }
+    }
+
+    if (creditAmount != 0 || debitAmount != 0) {
+      const tableRow = document.createElement("tr");
+      const tableHeadMonth = document.createElement("th");
+      const tableHeadBalance = document.createElement("th");
+      const tableHeadCreditAmount = document.createElement("th");
+      const tableHeadDebitAmount = document.createElement("th");
+
+      tableHeadMonth.setAttribute("scope", "col");
+      tableHeadBalance.setAttribute("scope", "col");
+      tableHeadCreditAmount.setAttribute("scope", "col");
+      tableHeadDebitAmount.setAttribute("scope", "col");
+
+      tableHeadMonth.innerText = `${rules[currentMonth].name}`;
+      tableHeadCreditAmount.innerText = `Total: ${creditAmount}`;
+      tableHeadDebitAmount.innerText = `Total: ${debitAmount}`;
+      tableHeadBalance.innerText = `Total: ${balance}`;
+
+      yearTableBody.appendChild(tableRow);
+      tableRow.appendChild(tableHeadMonth);
+      tableRow.appendChild(tableHeadCreditAmount);
+      tableRow.appendChild(tableHeadDebitAmount);
+      tableRow.appendChild(tableHeadBalance);
+
+      creditAmount = 0;
+      debitAmount = 0;
+      balance = 0;
     }
   }
 }
