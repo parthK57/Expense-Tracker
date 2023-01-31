@@ -3,6 +3,14 @@ const premiumBtn = document.querySelector("#premium-btn");
 const logOutBtn = document.querySelector("#logout-btn");
 const email = sessionStorage.getItem("email");
 const password = sessionStorage.getItem("password");
+const setBtn = document.querySelector("#setBtn");
+
+// Dynamic Pagination
+let expenseCount =
+  localStorage.getItem("expenseCount") == null
+    ? 10
+    : parseInt(localStorage.getItem("expenseCount"));
+// Dynamic Pagination
 
 // Logout
 logOutBtn.addEventListener("click", logoutUser);
@@ -134,9 +142,19 @@ function preload(email, password) {
       });
       const jsonData = res.data;
       const count = jsonData.length;
-      const pages = (count%10) == 0 ? count/10 : parseInt(count/10)+1;
+      setBtn.addEventListener("click", () => {
+        const setInput = document.querySelector("#set-rows").value;
+        console.log(setInput);
+        localStorage.setItem("expenseCount", `${setInput}`);
+        location.href = "http://127.0.0.1:5500/Frontend/expense.html";
+      });
+      const expenseCountParsed = parseInt(localStorage.getItem("expenseCount"));
+      const pages =
+        count % parseInt(expenseCountParsed) == 0
+          ? count / parseInt(expenseCountParsed)
+          : parseInt(count / parseInt(expenseCountParsed)) + 1;
 
-      paginationFunction(jsonData, pages);
+      paginationFunction(jsonData, pages, parseInt(expenseCountParsed));
     } catch (error) {
       console.log(error);
     }
@@ -146,7 +164,7 @@ function preload(email, password) {
 
 preload(email, password);
 
-function paginationFunction(jsonData, pages) {
+function paginationFunction(jsonData, pages, expenseCount) {
   const paginationContainer = document.querySelector(".pagination-container");
   const expenseList = document.querySelector("#expense-list");
   const nav = document.createElement("nav");
@@ -183,7 +201,7 @@ function paginationFunction(jsonData, pages) {
       btn.className = "page-link active";
       btn.setAttribute("id", "active-page");
 
-      for (let j = i * 10; j < (i + 1) * 10; j++) {
+      for (let j = i * expenseCount; j < (i + 1) * expenseCount; j++) {
         if (null == jsonData[j]) {
           break;
         } else {
@@ -197,7 +215,7 @@ function paginationFunction(jsonData, pages) {
       }
     });
     if (i == 0) {
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < expenseCount; j++) {
         write(
           jsonData[j].money,
           jsonData[j].description,

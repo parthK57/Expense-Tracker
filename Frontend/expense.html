@@ -127,9 +127,29 @@
           <h3 class="pb-2" style="border-bottom: 1px solid black">
             EXPENSE LIST
           </h3>
-          <div class="pagination-container">
-            
+          <div class="set-count mb-1 d-flex align-items-center">
+            <label
+              for="rows"
+              class="form-label"
+              style="font-size: 18px; margin-right: 5px"
+              >Rows:</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="set-rows"
+              style="width: 75px"
+            />
+            <button
+              type="submit"
+              class="btn btn-outline-primary"
+              id="setBtn"
+              style="margin-left: 10px"
+            >
+              Set
+            </button>
           </div>
+          <div class="pagination-container"></div>
         </div>
       </div>
       <div class="row d-flex justify-content-between" id="premium-row-0">
@@ -184,24 +204,27 @@
               > -->
               <span class="stats-info" id="credit-score"
                 ><p>Credit Amount:</p>
-                <p id="credit-value"></p></span
-              >
+                <p id="credit-value"></p
+              ></span>
               <span class="stats-info" id="debit-score"
                 ><p>Debit Amount:</p>
-                <p id="debit-value"></p></span
-              >
+                <p id="debit-value"></p
+              ></span>
               <span class="stats-info" id="balance"
                 ><p>Balance:</p>
-                <p id="balance-value"></p></span
-              >
+                <p id="balance-value"></p
+              ></span>
               <span class="stats-info" id="score"
                 ><p>Score:</p>
-                <p id="score-value"></p></span
-              >
+                <p id="score-value"></p
+              ></span>
             </div>
           </div>
         </div>
-        <div class="col-sm col-xl-6 col-lg-6 col-md-12 pt-2 pb-2 mt-5 d-flex flex-column" id="leader-bord-container">
+        <div
+          class="col-sm col-xl-6 col-lg-6 col-md-12 pt-2 pb-2 mt-5 d-flex flex-column"
+          id="leader-bord-container"
+        >
           <div class="d-flex flex-column w-100 justify-content-center">
             <div
               class="pt-3 pb-3 mt-1 d-flex"
@@ -214,16 +237,56 @@
               Leader Board
             </div>
             <div class="users-container d-flex flex-column pt-3 pt-b3">
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px; color: gold;" id="leader-board-0"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px; color: silver;" id="leader-board-1"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px; color: brown;" id="leader-board-2"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px;" id="leader-board-3"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px;" id="leader-board-4"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px;" id="leader-board-5"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px;" id="leader-board-6"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px;" id="leader-board-7"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px;" id="leader-board-8"></span>
-              <span class="mt-2 pt1 pb-1" style="font-size: 18px;" id="leader-board-9"></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px; color: gold"
+                id="leader-board-0"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px; color: silver"
+                id="leader-board-1"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px; color: brown"
+                id="leader-board-2"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px"
+                id="leader-board-3"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px"
+                id="leader-board-4"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px"
+                id="leader-board-5"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px"
+                id="leader-board-6"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px"
+                id="leader-board-7"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px"
+                id="leader-board-8"
+              ></span>
+              <span
+                class="mt-2 pt1 pb-1"
+                style="font-size: 18px"
+                id="leader-board-9"
+              ></span>
             </div>
           </div>
         </div>
