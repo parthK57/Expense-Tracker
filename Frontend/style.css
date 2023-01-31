@@ -245,3 +245,10 @@ th {
     width: 590px !important;
   }
 }
+
+.pagination-container{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}

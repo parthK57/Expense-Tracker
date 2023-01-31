@@ -133,14 +133,10 @@ function preload(email, password) {
         password: password,
       });
       const jsonData = res.data;
-      for (let i = 0; i < jsonData.length; i++) {
-        write(
-          jsonData[i].money,
-          jsonData[i].description,
-          jsonData[i].category,
-          jsonData[i].timestamp
-        );
-      }
+      const count = jsonData.length;
+      const pages = (count%10) == 0 ? count/10 : parseInt(count/10)+1;
+
+      paginationFunction(jsonData, pages);
     } catch (error) {
       console.log(error);
     }
@@ -149,6 +145,69 @@ function preload(email, password) {
 }
 
 preload(email, password);
+
+function paginationFunction(jsonData, pages) {
+  const paginationContainer = document.querySelector(".pagination-container");
+  const expenseList = document.querySelector("#expense-list");
+  const nav = document.createElement("nav");
+  const ul = document.createElement("ul");
+
+  nav.setAttribute("aria-label", "...");
+  ul.className = "pagination pagination-sm";
+
+  paginationContainer.appendChild(nav);
+  nav.appendChild(ul);
+
+  for (let i = 0; i < pages; i++) {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    li.className = "page-item";
+    if (i == 0) {
+      btn.className = "page-link active";
+      btn.setAttribute("id", "active-page");
+    } else {
+      btn.className = "page-link";
+    }
+    btn.innerText = `${i + 1}`;
+    li.appendChild(btn);
+    ul.appendChild(li);
+
+    btn.addEventListener("click", () => {
+      // removing previous elements
+      const cards = document.querySelectorAll(".card");
+      for (let i = 0; i < cards.length; i++) expenseList.removeChild(cards[i]);
+
+      const prevBtn = document.querySelector("#active-page");
+      prevBtn.setAttribute("class", "page-link");
+      prevBtn.setAttribute("id", "passive-page");
+      btn.className = "page-link active";
+      btn.setAttribute("id", "active-page");
+
+      for (let j = i * 10; j < (i + 1) * 10; j++) {
+        if (null == jsonData[j]) {
+          break;
+        } else {
+          write(
+            jsonData[j].money,
+            jsonData[j].description,
+            jsonData[j].category,
+            jsonData[j].timestamp
+          );
+        }
+      }
+    });
+    if (i == 0) {
+      for (let j = 0; j < 10; j++) {
+        write(
+          jsonData[j].money,
+          jsonData[j].description,
+          jsonData[j].category,
+          jsonData[j].timestamp
+        );
+      }
+    }
+  }
+}
 
 // Event Listener for premium button
 function premiumVerifier(email) {
@@ -172,7 +231,6 @@ function premiumVerifier(email) {
         reportsLink.setAttribute("class", "hide");
         premiumRowElement0.setAttribute("class", "hide");
         premiumRowElement1.setAttribute("class", "hide");
-        
       }
     } catch (error) {
       console.log(error);
