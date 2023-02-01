@@ -4,14 +4,6 @@ const jsonexport = require("jsonexport");
 const S3Services = require("../services/S3Services");
 const { v4: uuidv4 } = require("uuid");
 
-const currentTime = new Date();
-const currentOffset = currentTime.getTimezoneOffset();
-const ISTOffset = 330;
-const ISTTime = new Date(
-  currentTime.getTime() + (ISTOffset + currentOffset) * 60000
-);
-const timestamp = `${ISTTime.getDate()}/${ISTTime.getMonth()}/${ISTTime.getFullYear()} ${ISTTime.getHours()}:${ISTTime.getMinutes()}:${ISTTime.getSeconds()}:${ISTTime.getMilliseconds()}`;
-
 const getReportsHandler = (req, res) => {
   const headers = req.headers;
   const email = headers.email;
@@ -50,6 +42,13 @@ const saveReportsHandler = (req, res) => {
   const headers = req.headers;
   const email = headers.email;
   const password = headers.password;
+  const currentTime = new Date();
+  const currentOffset = currentTime.getTimezoneOffset();
+  const ISTOffset = 330;
+  const ISTTime = new Date(
+    currentTime.getTime() + (ISTOffset + currentOffset) * 60000
+  );
+  const timestamp = `${ISTTime.getDate()}/${ISTTime.getMonth()}/${ISTTime.getFullYear()} ${ISTTime.getHours()}:${ISTTime.getMinutes()}:${ISTTime.getSeconds()}:${ISTTime.getMilliseconds()}`;
 
   const accountVerifier = async () => {
     try {
@@ -94,11 +93,11 @@ const saveReportsHandler = (req, res) => {
   accountVerifier();
 };
 
-const reportHistoryHandler = (req,res) => {
+const reportHistoryHandler = (req, res) => {
   const headers = req.headers;
   const email = headers.email;
   const password = headers.password;
-  
+
   const accountVerifier = async () => {
     try {
       await db.execute(
@@ -126,10 +125,10 @@ const reportHistoryHandler = (req,res) => {
     }
   };
   accountVerifier();
-}
+};
 
 module.exports = {
   getReportsHandler,
   saveReportsHandler,
-  reportHistoryHandler
+  reportHistoryHandler,
 };

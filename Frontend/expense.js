@@ -202,7 +202,7 @@ function paginationFunction(jsonData, pages, expenseCount) {
       btn.setAttribute("id", "active-page");
 
       for (let j = i * expenseCount; j < (i + 1) * expenseCount; j++) {
-        if (null == jsonData[j]) {
+        if (jsonData == undefined || null) {
           break;
         } else {
           write(

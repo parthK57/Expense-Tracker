@@ -93,20 +93,23 @@ function getTableData() {
         },
       });
       const data = response.data;
-      const currentMonthData = data.map((obj) => {
-        if (obj.timestamp.split(" ")[0].split("/")[1] == currentMonth)
-          return obj;
-        else return null;
-      });
-      //console.log(currentMonthData);
-      monthTableFiller(currentMonthData);
-      const currentYearData = data.map((obj) => {
-        if (obj.timestamp.split(" ")[0].split("/")[2] == currentYear)
-          return obj;
-        else return null;
-      });
+      if (data != null) {
+        const currentMonthData = [];
+        for (let i = 0; i < data.length; i++)
+          if (data[i] != null)
+            if (data[i].timestamp.split(" ")[0].split("/")[1] == currentMonth)
+              currentMonthData.push(data[i]);
 
-      yearTableFiller(currentYearData);
+        monthTableFiller(currentMonthData);
+
+        const currentYearData = [];
+        for (let i = 0; i < data.length; i++)
+          if (data[i] != null)
+            if (data[i].timestamp.split(" ")[0].split("/")[2] == currentYear)
+              currentYearData.push(data[i]);
+
+        yearTableFiller(currentYearData);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -212,7 +215,7 @@ function yearTableFiller(data) {
       tableHeadCreditAmount.setAttribute("scope", "col");
       tableHeadDebitAmount.setAttribute("scope", "col");
 
-      tableHeadMonth.innerText = `${rules[currentMonth].name}`;
+      tableHeadMonth.innerText = `${rules[i].name}`;
       tableHeadCreditAmount.innerText = `Total: ${creditAmount}`;
       tableHeadDebitAmount.innerText = `Total: ${debitAmount}`;
       tableHeadBalance.innerText = `Total: ${balance}`;
@@ -240,7 +243,7 @@ function saveReport(e) {
           password: password,
         },
       });
-      console.log(response);
+
       if (response.status == 201) {
         const link = document.createElement("a");
         const tableContainer = document.querySelector("#table-container");
@@ -296,7 +299,7 @@ function reportHistoryFiller(data) {
     anchor.className = "link-info";
     thSr.innerText = `${i + 1}`;
     thDate.innerText = `${data[i].date}`;
-    anchor.setAttribute("href", `${data[i].link}`); 
+    anchor.setAttribute("href", `${data[i].link}`);
     anchor.innerText = "Download Link";
 
     tableBody.appendChild(tr);

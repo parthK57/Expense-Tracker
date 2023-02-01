@@ -256,7 +256,7 @@ exports.resetPasswordFormHandler = (req, res, next) => {
                   </script>
                   <nav class="navbar navbar-expand-lg" id="navbar">
                     <div class="container-fluid">
-                      <a class="navbar-brand" href="">EXPENSE TRACKER</a>
+                      <a class="navbar-brand" href="">ExpensePad</a>
                     </div>
                   </div>
                   </nav>
@@ -333,7 +333,7 @@ exports.passwordResetExecuteHandler = async (req, res) => {
           </style>
           <nav class="navbar navbar-expand-lg" id="navbar">
             <div class="container-fluid">
-              <a class="navbar-brand" href="">EXPENSE TRACKER</a>
+              <a class="navbar-brand" href="">ExpensePad</a>
             </div>
           </nav>
           <div
