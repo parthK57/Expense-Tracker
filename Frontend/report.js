@@ -15,66 +15,66 @@ function logoutUser() {
 
 const date = new Date();
 const currentDate = date.getDate();
-const currentMonth = date.getMonth();
+const currentMonth = date.getMonth() + 1;
 const currentYear = date.getFullYear();
 const rules = [
   {
-    month: 0,
+    month: 1,
     maxDays: 31,
     name: "January",
   },
   {
-    month: 1,
+    month: 2,
     maxDays: currentYear % 100 == 0 ? 28 : currentYear % 4 == 0 ? 29 : 28,
     name: "February",
   },
   {
-    month: 2,
+    month: 3,
     maxDays: 31,
     name: "March",
   },
   {
-    month: 3,
+    month: 4,
     maxDays: 30,
     name: "April",
   },
   {
-    month: 4,
+    month: 5,
     maxDays: 31,
     name: "May",
   },
   {
-    month: 5,
+    month: 6,
     maxDays: 30,
     name: "June",
   },
   {
-    month: 6,
+    month: 7,
     maxDays: 31,
     name: "July",
   },
   {
-    month: 7,
+    month: 8,
     maxDays: 31,
     name: "August",
   },
   {
-    month: 8,
+    month: 9,
     maxDays: 30,
     name: "September",
   },
   {
-    month: 9,
+    month: 10,
     maxDays: 31,
     name: "October",
   },
   {
-    month: 10,
+    month: 11,
     maxDays: 30,
     name: "November",
   },
   {
-    month: 11,
+    month: 12,
     maxDays: 31,
     name: "December",
   },
@@ -190,8 +190,7 @@ let debitAmount = 0;
 let balance = 0;
 function yearTableFiller(data) {
   const firstMonth = parseInt(data[0].timestamp.split(" ")[0].split("/")[1]);
-
-  for (let i = firstMonth; i <= 11; i++) {
+  for (let i = firstMonth; i <= 12; i++) {
     for (let j = 0; j < data.length; j++) {
       if (data[j].timestamp.split(" ")[0].split("/")[1] == i) {
         if (data[j].category == "Credit")
@@ -215,7 +214,7 @@ function yearTableFiller(data) {
       tableHeadCreditAmount.setAttribute("scope", "col");
       tableHeadDebitAmount.setAttribute("scope", "col");
 
-      tableHeadMonth.innerText = `${rules[i].name}`;
+      tableHeadMonth.innerText = `${rules[i - 1].name}`;
       tableHeadCreditAmount.innerText = `Total: ${creditAmount}`;
       tableHeadDebitAmount.innerText = `Total: ${debitAmount}`;
       tableHeadBalance.innerText = `Total: ${balance}`;

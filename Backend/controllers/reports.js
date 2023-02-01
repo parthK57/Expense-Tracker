@@ -48,7 +48,9 @@ const saveReportsHandler = (req, res) => {
   const ISTTime = new Date(
     currentTime.getTime() + (ISTOffset + currentOffset) * 60000
   );
-  const timestamp = `${ISTTime.getDate()}/${ISTTime.getMonth()}/${ISTTime.getFullYear()} ${ISTTime.getHours()}:${ISTTime.getMinutes()}:${ISTTime.getSeconds()}:${ISTTime.getMilliseconds()}`;
+  const timestamp = `${ISTTime.getDate()}/${
+    ISTTime.getMonth() + 1
+  }/${ISTTime.getFullYear()} ${ISTTime.getHours()}:${ISTTime.getMinutes()}:${ISTTime.getSeconds()}:${ISTTime.getMilliseconds()}`;
 
   const accountVerifier = async () => {
     try {
