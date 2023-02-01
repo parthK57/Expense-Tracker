@@ -1,13 +1,25 @@
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 dotenv.config();
 const app = express();
+
+const accessLogStram = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(helmet());
+app.use(morgan("combined", { stream: accessLogStram }));
 
 // ROUTES
 const postUserRoute = require("./routes/users");
@@ -44,4 +56,4 @@ app.use(reportGeneratorRoute);
 app.use(saveReportRoute);
 app.use(getReportHistoryRoute);
 
-app.listen(5000, () => console.log("Server live at: http://localhost:5000"));
+app.listen(5000);
