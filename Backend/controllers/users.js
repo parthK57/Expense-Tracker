@@ -166,7 +166,7 @@ exports.resetPasswordRequestHandler = async (req, res) => {
                   subject: "Reset your password.",
                   html: `
                 <h1>Hello ${username}!</h1>
-                <p>Click on the button to reset your password!</p>
+                <h4>Click on the button to reset your password!</h4>
                 <button id="reset-password"><a href="http://localhost:5000/resetpasswordform/reset?id=${id}">Reset Password</a></button>
               `,
                 };
