@@ -1,4 +1,4 @@
-# DOCUMENTRY
+# DOCUMENTARY
 
 ## FRONT-END
 
@@ -9,7 +9,7 @@ I am using MySQL as a Database and Express JS for the back-end of this applicati
 ## SCHEMA
 
 ```sql
-CREATE DATABASE \`expensetracker\` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE `expensetracker` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 ```
 
 ## TABLE - EXPENSES
